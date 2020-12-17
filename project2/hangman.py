@@ -1,61 +1,132 @@
+from sys import argv
 
-def get_words(filename):
-  words = []
+def debug_print(k,v):
+  if len(argv) > 4:
+    print(f'{k}:{v}')
 
-  with open(filename) as fin:
-    for line in fin:
-      words.append(line.strip())
-  return words
+def get_word():
+  with open(argv[1]) as words:
+    word1 = list()
 
-def word_bank1(words):
-  for word in words:
-    if len(word) == int(argv[2]):
-      word1 = word
+    for i in words:
+      if len(i) - 1 == int(argv[2]):
+        word2 = i.strip('\n')
+        word1.append(word2)
   return word1
 
-def hangmanp1(words):
-  wrongletters = ""
-  tries = int(argv[3])
-  hword = "_"*int(argv[2])
-  word1 = word_bank1(words)
+def criteria(i):
+  return i.count('_')
 
-  while tries > 0 and  word1 != hword:
-    print(hword)
-    print(f'missed letters: {wrongletters} ({tries} chances left)')
+def sort_dict(wdict):
+  lkey = (max(wdict,key = wdict.get))
+  lvalue = wdict[lkey]
+  sdict = dict()
 
-    attempt = input("Enter your guess: ")
-
-    if attempt in word1:
-      lword = list(hword)
-
-      for i in range(len(word1)):
-        if attempt == word1[i]:
-          lword.insert(i,attempt)
-          lword.pop(i + 1)
-      hword = ""
-      
-      for i in lword:
-        hword += i
+  for i in range(lvalue + 1):
+    blanks = list()
     
-    wrongletters = wrongletters + attempt + " "
-    tries -= 1
+    for c in wdict:
+      if wdict[c] == i:
+        blanks.append(c)
+    
+    blanks.sort(key = criteria)
+    s3 = list()
 
-  if word1 == hword:
-    print(f'You guessed the word: {word1}.')
-  else:
-    print(f'You lost after {argv[3]} wrong chances.')
-      
-  
+    for c in blanks:
+      s2 = list()
+      number = c.count('_')
 
+      for blank in blanks:
+        if blank.count('_') == number:
+          s2.append(blank)
+      s2.sort()
+      s3 += s2
 
-
-
-from sys import argv
-def debug_print(s):
-  if len(argv) > 4:
-    print(s)
+    for c in s3:
+      sdict[c] = i
+  return sdict
 
 def run():
+  words = get_word()
+  wrong = list()
+  attempts = 0
+  blank = list()
+
+  for i in range(int(argv[2])):
+    blank.append('_')
+
+  blanks = ''.join(blank)
+
+  if len(argv) > 4:
+    print(f'{len(words)} words left.')
+
+  print(f'{blanks}')
+  print(f'missed letters: ({int(argv[3]) - attempts} chances left.)')
+
+  while attempts < int(argv[3]) and blanks.count('_') != 0:
+    wvalue = dict()
+    wwords = dict()
+    letter = input('Enter your guess: ')
+
+    for word in words:
+      blank = list()
+
+      for i in range(int(argv[2])):
+        blank.append('_')
+
+      tblanks = blanks
+      tlist = list(tblanks)
+      count = 0
+      position = list()
+
+      for c in word:
+        count += 1
+
+        if c == letter:
+          if len(position) == 0:
+            position.append(word.index(c))
+          else:
+            position.append(count - 1)
+
+      if len(position) > 0:
+        for i in position:
+          del tlist[i]
+          tlist.insert(i,letter)
+        tblanks = ''.join(tlist)
+
+      if tblanks not in wvalue:
+        wvalue[tblanks] = 1
+        wwords[tblanks] = [word]
+      else:
+        wvalue[tblanks] += 1
+        wwords[tblanks] += [word]
+      
+    pick = max(wvalue,key = wvalue.get)
+
+    if pick == blanks:
+      if letter not in blanks:
+        if letter not in wrong:
+          wrong.append(letter)
+          attempts += 1
+
+    blanks = pick
+    words = wwords[pick]
+    sorted_dict = sort_dict(wvalue)
+
+    for k,v in sorted_dict.items():
+      debug_print(k,v)
+    if blanks.count('_') == 0:
+      print(f'\nYou guessed the word: {blanks}')
+      return
+    if attempts == int(argv[3]):
+      print(f'\nYou lost after {argv[3]} wrong guesses.')
+      return
+    if len(argv) > 4:
+      print(f'\n{wvalue[pick]} words left.')
+      print(f'{blanks}')
+    else:
+      print(f'{blanks}')
+    print(f"missed letters: {' '.join(wrong)} ({int(argv[3] - attempts)} chances left)")
   return
 
 if __name__ == '__main__':
