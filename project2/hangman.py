@@ -61,7 +61,7 @@ def run():
     print(f'{len(words)} words left.')
 
   print(f'{blanks}')
-  print(f'missed letters: ({int(argv[3]) - attempts} chances left.)')
+  print(f'missed letters: ({int(argv[3]) - attempts} chances left)')
 
   while attempts < int(argv[3]) and blanks.count('_') != 0:
     wvalue = dict()
@@ -125,8 +125,8 @@ def run():
       print(f'\n{wvalue[pick]} words left.')
       print(f'{blanks}')
     else:
-      print(f'{blanks}')
-    print(f"missed letters: {' '.join(wrong)} ({int(argv[3] - attempts)} chances left.)")
+      print(f'\n{blanks}')
+    print(f"missed letters: {' '.join(wrong)} ({int(argv[3]) - attempts} chances left)")
   return
 
 if __name__ == '__main__':
