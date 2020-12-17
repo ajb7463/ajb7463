@@ -55,7 +55,7 @@ def run():
   for i in range(int(argv[2])):
     blank.append('_')
 
-  blanks = ''.join(blank)
+  blanks =''.join(blank)
 
   if len(argv) > 4:
     print(f'{len(words)} words left.')
@@ -92,7 +92,7 @@ def run():
         for i in position:
           del tlist[i]
           tlist.insert(i,letter)
-        tblanks = ''.join(tlist)
+        tblanks =''.join(tlist)
 
       if tblanks not in wvalue:
         wvalue[tblanks] = 1
@@ -126,7 +126,7 @@ def run():
       print(f'{blanks}')
     else:
       print(f'\n{blanks}')
-    print(f"missed letters: {''.join(wrong)} ({int(argv[3]) - attempts} chances left)")
+    print(f"missed letters: {' '.join(wrong)} ({int(argv[3]) - attempts} chances left)")
   return
 
 if __name__ == '__main__':
