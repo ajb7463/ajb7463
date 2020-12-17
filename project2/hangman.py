@@ -61,7 +61,7 @@ def run():
     print(f'{len(words)} words left.')
 
   print(f'{blanks}')
-  print(f'missed letters: ({int(argv[3]) - attempts} chances left)')
+  print(f'missed letters:  ({int(argv[3]) - attempts} chances left)')
 
   while attempts < int(argv[3]) and blanks.count('_') != 0:
     wvalue = dict()
