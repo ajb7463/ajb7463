@@ -126,7 +126,7 @@ def run():
       print(f'{blanks}')
     else:
       print(f'{blanks}')
-    print(f"missed letters: {' '.join(wrong)} ({int(argv[3] - attempts)} chances left)")
+    print(f"missed letters: {' '.join(wrong)} ({int(argv[3] - attempts)} chances left.)")
   return
 
 if __name__ == '__main__':
